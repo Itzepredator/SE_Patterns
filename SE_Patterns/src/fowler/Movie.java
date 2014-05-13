@@ -5,10 +5,16 @@ public class Movie {
     public static final int NEW_RELEASE = 1;
     private String title;
     private int priceCode;
+    
     public Movie(String newtitle, int newpriceCode) {
         title = newtitle;
         priceCode = newpriceCode;
     }
+    
+    double getCharge(int daysRented) {
+    	return _price.getCharge(daysRented);
+    	}
+    
     public int getPriceCode() {
     	return _price.getPriceCode();
     	}
@@ -31,25 +37,7 @@ public class Movie {
     public String getTitle (){
         return title;
     };
-    public double getCharge(int daysRented) {
-		double result =0;
-		switch (this.getPriceCode()) {
-		    case Movie.REGULAR:
-		    	result += 2;
-		    	if (daysRented > 2)
-		        	result += (daysRented - 2) * 1.5;
-		    	break;
-		    case Movie.NEW_RELEASE:
-		    	result += daysRented * 3;
-		    	break;
-		    case Movie.CHILDRENS:
-		    	result += 1.5;
-		    	if (daysRented > 3)
-		        	result += (daysRented - 3) * 1.5;
-		    	break;
-		}
-		return result;
-	}
+  
 	public int getFrequentRenterPoints(int daysRented) {
 		int frequentRenterPoints =0;
 		// add frequent renter points
@@ -61,21 +49,37 @@ public class Movie {
 	}    
 	
 	abstract class Price {
+		abstract double getCharge(int daysRented);
 		abstract int getPriceCode();
 		}
 		class ChildrensPrice extends Price {
-		int getPriceCode() {
-		return Movie.CHILDRENS;
-		}
+			int getPriceCode() {
+				return Movie.CHILDRENS;
+			}
+			double getCharge(int daysRented){
+				double result = 1.5;
+				if (daysRented > 3)
+				result += (daysRented - 3) * 1.5;
+				return result;
+				}
 		}
 		class NewReleasePrice extends Price {
-		int getPriceCode() {
-		return Movie.NEW_RELEASE;
-		}
+			int getPriceCode() {
+				return Movie.NEW_RELEASE;
+			}
+			double getCharge(int daysRented){
+				return daysRented * 3;
+				}
 		}
 		class RegularPrice extends Price {
-		int getPriceCode() {
-		return Movie.REGULAR;
-		}
+			int getPriceCode() {
+				return Movie.REGULAR;
+			}
+			double getCharge(int daysRented){
+				double result = 2;
+				if (daysRented > 2)
+				result += (daysRented - 2) * 1.5;
+				return result;
+				}
 		}
 }
