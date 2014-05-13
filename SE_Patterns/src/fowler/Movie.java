@@ -7,6 +7,9 @@ public class Movie {
     private int priceCode;
     
     
+    int getFrequentRenterPoints(int daysRented) {
+    	return _price.getFrequentRenterPoints(daysRented);
+    	}
     public Movie(String newtitle, int newpriceCode) {
         title = newtitle;
         priceCode = newpriceCode;
@@ -38,19 +41,12 @@ public class Movie {
     public String getTitle (){
         return title;
     };
-  
-	public int getFrequentRenterPoints(int daysRented) {
-		int frequentRenterPoints =0;
-		// add frequent renter points
-		frequentRenterPoints ++;
-		// add bonus for a two day new release rental
-		if ((this.getPriceCode() == Movie.NEW_RELEASE) && daysRented > 1) 
-		    frequentRenterPoints ++;
-		return frequentRenterPoints;
-	}    
-	
+
 	abstract class Price {
 		abstract double getCharge(int daysRented);
+		int getFrequentRenterPoints(int daysRented){
+			return 1;
+			}
 		abstract int getPriceCode();
 		}
 		class ChildrensPrice extends Price {
@@ -70,6 +66,9 @@ public class Movie {
 			}
 			double getCharge(int daysRented){
 				return daysRented * 3;
+				}
+			int getFrequentRenterPoints(int daysRented) {
+				return (daysRented > 1) ? 2: 1;
 				}
 		}
 		class RegularPrice extends Price {
